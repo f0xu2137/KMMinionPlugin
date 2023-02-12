@@ -1,6 +1,7 @@
 package pl.kwadratowamasakra.minions.methods;
 
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
 
@@ -9,8 +10,12 @@ public class Minion {
     private final ArmorStand armorStand;
     private final Color[] colors = new Color[4];
     private int animationFrame;
+    private int animationFrameTotal;
     private boolean toStartAnimation;
     private int animationCount;
+    private int animationCountStart;
+    private int maxAnimationFrame;
+    private Location blockLocation;
 
     public Minion(final ArmorStand armorStand) {
         this.armorStand = armorStand;
@@ -32,6 +37,14 @@ public class Minion {
         this.animationFrame = animationFrame;
     }
 
+    public final int getAnimationFrameTotal() {
+        return animationFrameTotal;
+    }
+
+    public final void setAnimationFrameTotal(final int animationFrameTotal) {
+        this.animationFrameTotal = animationFrameTotal;
+    }
+
     public final boolean isToStartAnimation() {
         return toStartAnimation;
     }
@@ -50,6 +63,34 @@ public class Minion {
 
     public final void setAnimationCount(final int animationCount) {
         this.animationCount = animationCount;
+    }
+
+    public final int getAnimationCountStart() {
+        return animationCountStart;
+    }
+
+    public final void setAnimationCountStart(final int animationCountStart) {
+        this.animationCountStart = animationCountStart;
+    }
+
+    public final int getMaxAnimationFrame() {
+        return maxAnimationFrame;
+    }
+
+    public final void setMaxAnimationFrame(final int maxAnimationFrame) {
+        int frame = maxAnimationFrame;
+        if (frame % 2 != 0) {
+            frame += 1;
+        }
+        this.maxAnimationFrame = frame;
+    }
+
+    public final Location getBlockLocation() {
+        return blockLocation;
+    }
+
+    public final void setBlockLocation(final Location blockLocation) {
+        this.blockLocation = blockLocation;
     }
 
     private void setColor(final Color color) {

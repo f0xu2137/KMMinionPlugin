@@ -47,8 +47,6 @@ public class MinionCommand implements CommandExecutor {
             stand.setItemInHand(itemStack);
 
             final Minion minion = new Minion(stand);
-            minion.setAnimationCount(8);
-            minion.setToStartAnimation(true);
 
             final Color[] colors = new Color[1];
             colors[0] = Color.fromRGB(255, 0, 0);

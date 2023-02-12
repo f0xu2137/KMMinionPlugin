@@ -48,10 +48,8 @@ public class DiscoArmorTask extends BukkitRunnable {
     @SuppressWarnings("deprecation")
     public final void run() {
         for (final Minion minion : plugin.getServerHelper().getMinions()) {
-            final Color color;
-            final Color[] colors;
-            colors = minion.getColors();
-            color = nextRGB(colors[0]);
+            final Color[] colors = minion.getColors();
+            final Color color = nextRGB(colors[0]);
             colors[0] = color;
             minion.setColors(colors);
             for (int i = 0; i < 3; ++i) {
