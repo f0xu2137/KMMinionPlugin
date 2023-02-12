@@ -3,7 +3,6 @@ package pl.kwadratowamasakra.minions.methods;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import pl.kwadratowamasakra.minions.utils.ItemBuilder;
 
 import java.util.*;
@@ -16,11 +15,6 @@ public class ServerHelper {
 
     public ServerHelper() {
         defaultGlass = setDefaultGlass();
-    }
-
-    private static Location lookAt(final Location entity, final Location target) {
-        final Vector dirBetweenLocations = target.toVector().subtract(entity.toVector());
-        return entity.setDirection(dirBetweenLocations);
     }
 
     private static ItemStack setDefaultGlass() {
@@ -43,8 +37,6 @@ public class ServerHelper {
         for (final Minion minion : minionList) {
             final Location minionLoc = minion.getArmorStand().getLocation().getBlock().getLocation().clone().add(0.5, 0, 0.5);
             if (minionLoc.getBlockY() == location.getBlockY() && location.distance(minionLoc) < 2) {
-                final Location loc = minion.getArmorStand().getLocation();
-                minion.getArmorStand().teleport(lookAt(loc, location));
                 return minion;
             }
         }
@@ -55,6 +47,22 @@ public class ServerHelper {
         for (final Minion minion : minionList) {
             if (minion.getArmorStand().getEntityId() == id) {
                 return minion;
+            }
+        }
+        return null;
+    }
+
+    public final void removeBlockByLocation(final Location location) {
+        for (final Minion minion : minionList) {
+            final MinionBlock toRemove = getMinionBlockByLocation(minion, location);
+            minion.removeBlock(toRemove);
+        }
+    }
+
+    public final MinionBlock getMinionBlockByLocation(final Minion minion, final Location location) {
+        for (final MinionBlock minionBlock : minion.getBlocksQueue()) {
+            if (minionBlock.getBlockLocation().equals(location)) {
+                return minionBlock;
             }
         }
         return null;

@@ -11,6 +11,8 @@ import pl.kwadratowamasakra.minions.KMMinionPlugin;
 import pl.kwadratowamasakra.minions.methods.Minion;
 import pl.kwadratowamasakra.minions.utils.DiscoArmorUtil;
 
+import java.util.ArrayList;
+
 public class DiscoArmorTask extends BukkitRunnable {
 
     private final KMMinionPlugin plugin;
@@ -47,7 +49,7 @@ public class DiscoArmorTask extends BukkitRunnable {
 
     @SuppressWarnings("deprecation")
     public final void run() {
-        for (final Minion minion : plugin.getServerHelper().getMinions()) {
+        for (final Minion minion : new ArrayList<>(plugin.getServerHelper().getMinions())) {
             final Color[] colors = minion.getColors();
             final Color color = nextRGB(colors[0]);
             colors[0] = color;

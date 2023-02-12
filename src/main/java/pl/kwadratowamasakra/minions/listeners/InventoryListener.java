@@ -47,10 +47,7 @@ public class InventoryListener implements Listener {
                     e.getView().setItem(13, toPlace);
                     minion.getArmorStand().setItemInHand(toPlace);
                 } else if (slot == 26) {
-                    if (minion.getItemStack() != null) {
-                        minion.getArmorStand().getWorld().dropItem(minion.getArmorStand().getLocation(), minion.getItemStack());
-                    }
-                    minion.getArmorStand().remove();
+                    minion.destroyMinion();
                     plugin.getServerHelper().removeMinion(minion);
                     p.closeInventory();
                 }

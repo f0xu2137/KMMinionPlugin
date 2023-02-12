@@ -15,10 +15,6 @@ public class ItemBuilder {
     private final Material mat;
     private String title;
 
-    public ItemBuilder(final Material mat, final int amount) {
-        this(mat, amount, 0);
-    }
-
     public ItemBuilder(final Material mat, final int amount, final int data) {
         title = null;
         lore = new ArrayList<>();

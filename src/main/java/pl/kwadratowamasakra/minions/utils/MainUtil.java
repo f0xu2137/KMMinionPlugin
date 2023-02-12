@@ -1,9 +1,11 @@
 package pl.kwadratowamasakra.minions.utils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -39,6 +41,11 @@ public class MainUtil {
         }
         item.setDurability((short) (durability + 1));
         armorStand.setItemInHand(item);
+    }
+
+    public static Location setLookAt(final Location entity, final Location target) {
+        final Vector dirBetweenLocations = target.toVector().subtract(entity.toVector());
+        return entity.setDirection(dirBetweenLocations);
     }
 
 }

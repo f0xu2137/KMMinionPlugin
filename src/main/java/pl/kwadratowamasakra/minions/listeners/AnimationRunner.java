@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import pl.kwadratowamasakra.minions.KMMinionPlugin;
 import pl.kwadratowamasakra.minions.methods.Minion;
+import pl.kwadratowamasakra.minions.methods.MinionBlock;
 import pl.kwadratowamasakra.minions.utils.MainUtil;
 
 import java.util.ArrayList;
@@ -28,42 +29,49 @@ public class AnimationRunner extends BukkitRunnable {
     }
 
     public final void run() {
-        final List<Minion> minions = plugin.getServerHelper().getMinions();
+        final List<Minion> minions = new ArrayList<>(plugin.getServerHelper().getMinions());
         for (final Minion minion : minions) {
-            if (minion.isToStartAnimation() || minion.isRunningAnimation()) {
-                minion.setToStartAnimation(false);
-                minion.setAnimationFrame(minion.getAnimationFrame() + 1);
-                minion.setAnimationFrameTotal(minion.getAnimationFrameTotal() + 1);
-                final Location blockLocation = minion.getBlockLocation();
+            final MinionBlock minionBlock = minion.getCurrentBlock();
+            if (minionBlock != null && (minionBlock.isToStartAnimation() || minionBlock.isRunningAnimation())) {
+                if (minionBlock.getAnimationFrameTotal() == 0) {
+                    final Location loc = minion.getArmorStand().getLocation();
+                    final Location location = minionBlock.getBlockLocation().clone().add(0.5, 0, 0.5);
+                    minion.getArmorStand().teleport(MainUtil.setLookAt(loc, location));
+                }
+                minionBlock.setToStartAnimation(false);
+                minionBlock.setAnimationFrame(minionBlock.getAnimationFrame() + 1);
+                minionBlock.setAnimationFrameTotal(minionBlock.getAnimationFrameTotal() + 1);
+                final Location blockLocation = minionBlock.getBlockLocation();
 
                 final BlockPosition blockPosition = new BlockPosition(blockLocation.getBlockX(), blockLocation.getBlockY(), blockLocation.getBlockZ());
-                final PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(0, blockPosition, Math.min((int) ((minion.getAnimationFrameTotal() * (10.0 / (minion.getMaxAnimationFrame() * minion.getAnimationCountStart()))) - 1), 9));
+                final PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(0, blockPosition, Math.min((int) ((minionBlock.getAnimationFrameTotal() * (10.0 / (minionBlock.getMaxAnimationFrame() * minionBlock.getAnimationCountStart()))) - 1), 9));
 
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final PlayerConnection connection = ((CraftPlayer) p).getHandle().playerConnection;
                     connection.sendPacket(packet);
                 }
-                if (minion.getAnimationFrame() <= (minion.getMaxAnimationFrame() / 2)) {
+                if (minionBlock.getAnimationFrame() <= (minionBlock.getMaxAnimationFrame() / 2)) {
                     minion.getArmorStand().setRightArmPose(
                             new EulerAngle(
-                                    ((-0.15 / (minion.getMaxAnimationFrame() / 2.0)) * minion.getAnimationFrame()) * 3,
+                                    ((-0.15 / (minionBlock.getMaxAnimationFrame() / 2.0)) * minionBlock.getAnimationFrame()) * 3,
                                     0,
-                                    ((-0.05 / (minion.getMaxAnimationFrame() / 2.0)) * minion.getAnimationFrame()) * 3
+                                    ((-0.05 / (minionBlock.getMaxAnimationFrame() / 2.0)) * minionBlock.getAnimationFrame()) * 3
                             ));
-                } else if (minion.getAnimationFrame() <= minion.getMaxAnimationFrame()) {
+                } else if (minionBlock.getAnimationFrame() <= minionBlock.getMaxAnimationFrame()) {
                     minion.getArmorStand().setRightArmPose(
                             new EulerAngle(
-                                    (-0.45) + (0.15 / (minion.getMaxAnimationFrame() / 2.0)) * 3 * (minion.getAnimationFrame() - (minion.getMaxAnimationFrame() / 2.0)),
+                                    (-0.45) + (0.15 / (minionBlock.getMaxAnimationFrame() / 2.0)) * 3 * (minionBlock.getAnimationFrame() - (minionBlock.getMaxAnimationFrame() / 2.0)),
                                     0,
-                                    (-0.15) + (0.05 / (minion.getMaxAnimationFrame() / 2.0)) * 3 * (minion.getAnimationFrame() - (minion.getMaxAnimationFrame() / 2.0))
+                                    (-0.15) + (0.05 / (minionBlock.getMaxAnimationFrame() / 2.0)) * 3 * (minionBlock.getAnimationFrame() - (minionBlock.getMaxAnimationFrame() / 2.0))
                             ));
                 } else {
-                    minion.setAnimationFrame(0);
-                    minion.setAnimationCount(minion.getAnimationCount() - 1);
-                    if (minion.getAnimationCount() > 0) {
-                        minion.setToStartAnimation(true);
+                    minionBlock.setAnimationFrame(0);
+                    minionBlock.setAnimationCount(minionBlock.getAnimationCount() - 1);
+                    if (minionBlock.getAnimationCount() > 0) {
+                        minionBlock.setToStartAnimation(true);
                     } else {
-                        minion.setAnimationFrameTotal(0);
+                        minionBlock.setAnimationFrameTotal(0);
+                        minion.removeBlock(minionBlock);
                         final List<ItemStack> items = new ArrayList<>(blockLocation.getBlock().getDrops(minion.getItemStack()));
                         for (final ItemStack itemStack : items) {
                             blockLocation.getWorld().dropItem(blockLocation, itemStack);
