@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.kwadratowamasakra.minions.KMMinionPlugin;
 import pl.kwadratowamasakra.minions.methods.Minion;
-import pl.kwadratowamasakra.minions.utils.ChatUtil;
 import pl.kwadratowamasakra.minions.utils.DiscoArmorUtil;
+import pl.kwadratowamasakra.minions.utils.MainUtil;
 import pl.kwadratowamasakra.minions.utils.SkullItemBuilder;
 
 public class MinionCommand implements CommandExecutor {
@@ -35,7 +35,7 @@ public class MinionCommand implements CommandExecutor {
             stand.setSmall(true);
             stand.setArms(true);
             stand.setGravity(false);
-            stand.setCustomName(ChatUtil.fixColor("&e>> MINION <<"));
+            stand.setCustomName(MainUtil.fixColor("&e>> MINION <<"));
             stand.setCustomNameVisible(true);
             stand.setHelmet(new SkullItemBuilder(Material.SKULL_ITEM, 1, 3, "radek203").build());
             stand.setChestplate(DiscoArmorUtil.setArmorColor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.AQUA));

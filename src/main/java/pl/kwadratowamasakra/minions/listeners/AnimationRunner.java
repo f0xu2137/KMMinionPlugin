@@ -5,13 +5,17 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutBlockBreakAnimation;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import pl.kwadratowamasakra.minions.KMMinionPlugin;
 import pl.kwadratowamasakra.minions.methods.Minion;
+import pl.kwadratowamasakra.minions.utils.MainUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationRunner extends BukkitRunnable {
@@ -42,9 +46,9 @@ public class AnimationRunner extends BukkitRunnable {
                 if (minion.getAnimationFrame() <= (minion.getMaxAnimationFrame() / 2)) {
                     minion.getArmorStand().setRightArmPose(
                             new EulerAngle(
-                                ((-0.15 / (minion.getMaxAnimationFrame() / 2.0)) * minion.getAnimationFrame()) * 3,
-                                0,
-                                ((-0.05 / (minion.getMaxAnimationFrame() / 2.0)) * minion.getAnimationFrame()) * 3
+                                    ((-0.15 / (minion.getMaxAnimationFrame() / 2.0)) * minion.getAnimationFrame()) * 3,
+                                    0,
+                                    ((-0.05 / (minion.getMaxAnimationFrame() / 2.0)) * minion.getAnimationFrame()) * 3
                             ));
                 } else if (minion.getAnimationFrame() <= minion.getMaxAnimationFrame()) {
                     minion.getArmorStand().setRightArmPose(
@@ -60,6 +64,12 @@ public class AnimationRunner extends BukkitRunnable {
                         minion.setToStartAnimation(true);
                     } else {
                         minion.setAnimationFrameTotal(0);
+                        final List<ItemStack> items = new ArrayList<>(blockLocation.getBlock().getDrops(minion.getItemStack()));
+                        for (final ItemStack itemStack : items) {
+                            blockLocation.getWorld().dropItem(blockLocation, itemStack);
+                        }
+                        MainUtil.recalculateDurability(minion.getArmorStand(), minion.getItemStack());
+                        blockLocation.getBlock().setType(Material.AIR);
                     }
                 }
             }

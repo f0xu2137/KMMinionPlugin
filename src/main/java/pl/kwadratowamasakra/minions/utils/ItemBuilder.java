@@ -36,7 +36,7 @@ public class ItemBuilder {
         final ItemStack item = new ItemStack(mat, amount, data);
         final ItemMeta itemMeta = item.getItemMeta();
         if (title != null) {
-            itemMeta.setDisplayName(ChatUtil.fixColor(title));
+            itemMeta.setDisplayName(MainUtil.fixColor(title));
         }
         if (!lore.isEmpty()) {
             itemMeta.setLore(lore);

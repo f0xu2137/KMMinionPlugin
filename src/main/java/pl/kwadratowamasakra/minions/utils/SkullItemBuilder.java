@@ -34,7 +34,7 @@ public class SkullItemBuilder {
         final ItemStack item = new ItemStack(mat, amount, data);
         final SkullMeta meta = (SkullMeta) item.getItemMeta();
         if (title != null) {
-            meta.setDisplayName(ChatUtil.fixColor(title));
+            meta.setDisplayName(MainUtil.fixColor(title));
         }
         if (owner != null) {
             meta.setOwner(owner);
