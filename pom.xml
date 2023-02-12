@@ -57,7 +57,7 @@
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>system</scope>
             <systemPath>
-                C:/Users/f0xu2/Documents/API/spigot.jar
+                D:/API/spigot.jar
             </systemPath>
         </dependency>
     </dependencies>
