@@ -1,0 +1,5 @@
+name: KMMinionPlugin
+version: 1.0
+main: pl.kwadratowamasakra.minions.KMMinionPlugin
+commands:
+  minion:
