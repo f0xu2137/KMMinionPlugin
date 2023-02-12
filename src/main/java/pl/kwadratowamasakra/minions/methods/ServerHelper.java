@@ -10,21 +10,28 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import pl.kwadratowamasakra.minions.utils.ItemBuilder;
+import pl.kwadratowamasakra.minions.utils.MainUtil;
 
 import java.util.*;
 
 public class ServerHelper {
 
     private final ItemStack defaultGlass;
+    private final ItemStack minionItem;
     private final List<Minion> minionList = new ArrayList<>();
     private final Map<UUID, Integer> clickedMinions = new HashMap<>();
 
     public ServerHelper() {
         defaultGlass = setDefaultGlass();
+        minionItem = loadMinion();
     }
 
     private static ItemStack setDefaultGlass() {
         return new ItemBuilder(Material.STAINED_GLASS_PANE, 1, 7).setTitle(" ").addLore(" ").build();
+    }
+
+    private static ItemStack loadMinion() {
+        return new ItemBuilder(Material.EMERALD_ORE, 1, 0).setTitle("&aMINION").addLore(" ").addLore(MainUtil.fixColor(" &e>> Postaw na ziemi, aby utworzyc nowego miniona!")).build();
     }
 
     public final List<Minion> getMinions() {
@@ -76,6 +83,10 @@ public class ServerHelper {
 
     public final ItemStack getDefaultGlass() {
         return defaultGlass;
+    }
+
+    public final ItemStack getMinionItem() {
+        return minionItem;
     }
 
     public final int getOpenedInv(final UUID uuid) {

@@ -48,10 +48,14 @@ public class InventoryListener implements Listener {
             if (minion != null) {
                 if (slot == 13) {
                     final ItemStack toPlace = e.getCursor().clone();
-                    final ItemStack itemStack = minion.getItemStack().clone();
-                    p.setItemOnCursor(itemStack);
-                    e.getView().setItem(13, toPlace);
-                    minion.getArmorStand().setItemInHand(toPlace);
+                    if (toPlace == null || toPlace.getType() == Material.AIR || toPlace.getType() == Material.WOOD_PICKAXE || toPlace.getType() == Material.STONE_PICKAXE || toPlace.getType() == Material.GOLD_PICKAXE || toPlace.getType() == Material.IRON_PICKAXE || toPlace.getType() == Material.DIAMOND_PICKAXE) {
+                        final ItemStack itemStack = minion.getItemStack().clone();
+                        p.setItemOnCursor(itemStack);
+                        e.getView().setItem(13, toPlace);
+                        minion.getArmorStand().setItemInHand(toPlace);
+                    } else {
+                        p.sendMessage(MainUtil.fixColor("&8>> &cTego przedmiotu nie mozesz tu umiescic!"));
+                    }
                 } else if (slot == 26) {
                     minion.destroyMinion();
                     plugin.getServerHelper().removeMinion(minion);

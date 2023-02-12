@@ -6,8 +6,11 @@
 
 package pl.kwadratowamasakra.minions.listeners;
 
+import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -15,9 +18,12 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.inventory.ItemStack;
 import pl.kwadratowamasakra.minions.KMMinionPlugin;
 import pl.kwadratowamasakra.minions.methods.Minion;
 import pl.kwadratowamasakra.minions.methods.MinionBlock;
+import pl.kwadratowamasakra.minions.utils.MainUtil;
+import pl.kwadratowamasakra.minions.utils.SkullItemBuilder;
 
 import java.util.List;
 
@@ -32,6 +38,26 @@ public class BlockListeners implements Listener {
     @EventHandler
     public final void onPlace(final BlockPlaceEvent e) {
         final Block block = e.getBlock();
+        if (e.getItemInHand().isSimilar(plugin.getServerHelper().getMinionItem())) {
+            block.setType(Material.AIR);
+            final Location location = block.getLocation();
+            final ArmorStand stand = location.getWorld().spawn(location.clone().add(0.5, 0, 0.5), ArmorStand.class);
+            stand.setSmall(true);
+            stand.setArms(true);
+            stand.setGravity(false);
+            stand.setCustomName(MainUtil.fixColor("&e>> MINION <<"));
+            stand.setCustomNameVisible(true);
+            stand.setHelmet(new SkullItemBuilder(Material.SKULL_ITEM, 1, 3, "radek203").build());
+
+            final Minion minion = new Minion(stand);
+            minion.getArmorStand().setItemInHand(new ItemStack(Material.STONE_PICKAXE));
+
+            final Color color = Color.fromRGB(255, 0, 0);
+            minion.setColor(color);
+            plugin.getServerHelper().addMinion(minion);
+
+            return;
+        }
         if (block.getType() == Material.STONE || block.getType() == Material.OBSIDIAN) {
             final Minion minion = plugin.getServerHelper().getMinionByLocation(block.getLocation().clone().add(0.5, 0, 0.5));
             if (minion != null) {

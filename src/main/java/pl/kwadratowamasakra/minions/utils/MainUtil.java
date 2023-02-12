@@ -8,11 +8,14 @@ package pl.kwadratowamasakra.minions.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.Map;
 import java.util.Random;
 
 public class MainUtil {
@@ -52,6 +55,18 @@ public class MainUtil {
     public static Location setLookAt(final Location entity, final Location target) {
         final Vector dirBetweenLocations = target.toVector().subtract(entity.toVector());
         return entity.setDirection(dirBetweenLocations);
+    }
+
+    public static void givePlayerItems(final Player p, final ItemStack itemStack) {
+        final Map<Integer, ItemStack> notStored = p.getInventory().addItem(itemStack);
+        if (!notStored.isEmpty()) {
+            final Location pLoc = p.getLocation();
+            for (final ItemStack en : notStored.values()) {
+                if (en.getType() != Material.AIR) {
+                    pLoc.getWorld().dropItem(pLoc, en);
+                }
+            }
+        }
     }
 
 }

@@ -22,7 +22,9 @@ public class MinionInventory {
             inv.setItem(i, serverHelper.getDefaultGlass());
         }
 
+        inv.setItem(4, new ItemBuilder(Material.STAINED_GLASS_PANE, 1, 1).setTitle("&ePRZEDMIOT DO KOPANIA").build());
         inv.setItem(13, minion.getItemStack());
+        inv.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE, 1, 1).setTitle("&ePRZEDMIOT DO KOPANIA").build());
 
         inv.setItem(26, new ItemBuilder(Material.MONSTER_EGG, 1, 58).setTitle(" &8>> &7USUN MINIONA").build());
         return inv;

@@ -30,6 +30,8 @@ public class KMMinionPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryListener(this), this);
 
         getCommand("minion").setExecutor(new MinionCommand(this));
+
+        //TODO Config with item and blocks
     }
 
     @Override

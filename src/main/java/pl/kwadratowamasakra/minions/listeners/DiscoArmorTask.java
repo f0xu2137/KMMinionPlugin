@@ -56,10 +56,9 @@ public class DiscoArmorTask extends BukkitRunnable {
     @SuppressWarnings("deprecation")
     public final void run() {
         for (final Minion minion : new ArrayList<>(plugin.getServerHelper().getMinions())) {
-            final Color[] colors = minion.getColors();
-            final Color color = nextRGB(colors[0]);
-            colors[0] = color;
-            minion.setColors(colors);
+            final Color lastColor = minion.getColor();
+            final Color color = nextRGB(lastColor);
+            minion.setColor(color);
             for (int i = 0; i < 3; ++i) {
                 final ItemStack item = new ItemStack(Material.getMaterial(298 + i), 1);
                 final LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
