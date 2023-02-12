@@ -1,3 +1,9 @@
+/*
+ *
+ *  * Copyright 2023 ~Author: radek203
+ *
+ */
+
 package pl.kwadratowamasakra.minions.methods;
 
 import org.bukkit.Color;

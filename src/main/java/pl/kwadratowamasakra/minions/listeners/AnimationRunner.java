@@ -1,3 +1,9 @@
+/*
+ *
+ *  * Copyright 2023 ~Author: radek203
+ *
+ */
+
 package pl.kwadratowamasakra.minions.listeners;
 
 import net.minecraft.server.v1_8_R3.BlockPosition;
